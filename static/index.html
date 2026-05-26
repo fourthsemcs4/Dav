@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CineRate - Discover, review, and rate your favorite movies. Premium glassmorphic interface with real-time statistics and reviews.">
+    <title>CineRate | Premium Movie Reviews & Ratings</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Premium Ambient Glow Effects in Background -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Main Navigation Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand" id="brand-logo">
+                <i class="fa-solid fa-film brand-icon"></i>
+                <span class="brand-text">Cine<span class="highlight">Rate</span></span>
+            </div>
+            <div class="header-tagline">Your Premium Movie Companion</div>
+        </div>
+    </header>
+
+    <!-- App Shell Wrapper -->
+    <main class="app-container">
+        
+        <!-- Hero & Statistics Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Explore. Rate. Share.</h1>
+                <p class="hero-subtitle">Dive into a curated list of cinematic masterpieces, share your honest feedback, and see what the community thinks.</p>
+            </div>
+            
+            <!-- Dynamic Stats Panel -->
+            <div class="stats-panel" id="stats-panel-container">
+                <div class="stat-card" id="stat-total-movies">
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-clapperboard"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="val-total-movies">-</span>
+                        <span class="stat-label">Total Movies</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-total-reviews">
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-comments"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="val-total-reviews">-</span>
+                        <span class="stat-label">Reviews Submitted</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-avg-rating">
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-star-half-stroke"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="val-avg-rating">-</span>
+                        <span class="stat-label">Community Avg</span>
+                    </div>
+                </div>
+                <div class="stat-card" id="stat-top-movie">
+                    <div class="stat-icon-wrapper"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="val-top-movie">-</span>
+                        <span class="stat-label">Top Rated Movie</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search, Filtering, and Controls -->
+        <section class="controls-section">
+            <div class="search-box-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search by title or director..." autocomplete="off">
+                <button class="clear-search-btn" id="clear-search-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Genre Tabs Container -->
+            <div class="genre-tabs-container">
+                <div class="genre-tabs-scroll" id="genre-tabs-list">
+                    <!-- Loaded dynamically via JavaScript -->
+                    <button class="genre-tab active" data-genre="">All Genres</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Movie Catalog Grid -->
+        <section class="catalog-section">
+            <div class="catalog-header">
+                <h2 class="section-title" id="catalog-title">All Masterpieces</h2>
+                <div class="results-count" id="results-count-text">Loading catalog...</div>
+            </div>
+            
+            <div class="movie-grid" id="movie-grid-container">
+                <!-- Dynamically populated movie cards -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Fetching movies database...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>&copy; 2026 CineRate. Built for film lovers. Powered by Python & Flask.</p>
+    </footer>
+
+    <!-- Movie Detail Modal Overlay -->
+    <div class="modal-overlay" id="movie-detail-modal">
+        <div class="modal-card">
+            <button class="close-modal-btn" id="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="modal-content-grid">
+                <!-- Left Poster Pane -->
+                <div class="modal-poster-pane">
+                    <img id="modal-movie-poster" src="" alt="Movie Poster">
+                    <div class="modal-poster-glow" id="modal-movie-poster-glow"></div>
+                </div>
+                
+                <!-- Right Details Pane -->
+                <div class="modal-details-pane">
+                    <div class="modal-header-info">
+                        <span class="modal-movie-genre" id="modal-movie-genre">Genre</span>
+                        <h2 class="modal-movie-title" id="modal-movie-title">Movie Title</h2>
+                        <div class="modal-movie-meta">
+                            <span><i class="fa-regular fa-calendar"></i> <span id="modal-movie-year">2000</span></span>
+                            <span><i class="fa-solid fa-bullhorn"></i> Directed by <span id="modal-movie-director">Director</span></span>
+                        </div>
+                        <div class="modal-movie-rating-badge">
+                            <span class="rating-stars" id="modal-movie-stars"></span>
+                            <span class="rating-number" id="modal-movie-rating-val">0.0</span>
+                            <span class="rating-count" id="modal-movie-rating-count">(0 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3 class="modal-section-title">Synopsis</h3>
+                        <p class="modal-movie-plot" id="modal-movie-plot">Plot summary goes here...</p>
+                    </div>
+
+                    <!-- Reviews & Review Form Tabs -->
+                    <div class="modal-tabs-headers">
+                        <button class="modal-tab-btn active" id="btn-tab-reviews">Reviews</button>
+                        <button class="modal-tab-btn" id="btn-tab-add-review">Write a Review</button>
+                    </div>
+
+                    <!-- Reviews List View -->
+                    <div class="modal-tab-content active" id="modal-reviews-list-tab">
+                        <div class="reviews-list" id="modal-reviews-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Review Form View -->
+                    <div class="modal-tab-content" id="modal-add-review-tab">
+                        <form class="review-form" id="movie-review-form">
+                            <div class="form-group">
+                                <label for="reviewer-name-input">Your Name</label>
+                                <input type="text" id="reviewer-name-input" placeholder="e.g. John Doe" required autocomplete="name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Your Rating</label>
+                                <div class="star-rating-selector" id="star-rating-selector">
+                                    <input type="radio" name="star-rating" id="star5" value="5"><label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" name="star-rating" id="star4" value="4"><label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" name="star-rating" id="star3" value="3"><label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" name="star-rating" id="star2" value="2"><label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" name="star-rating" id="star1" value="1"><label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                                </div>
+                                <span class="rating-hint-text" id="star-rating-hint">Select a rating</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="review-comment-input">Review Comment</label>
+                                <textarea id="review-comment-input" rows="4" placeholder="What did you think of the movie? Write your thoughts..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="submit-review-btn">
+                                <span>Submit Review</span> <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast System -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Custom App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
